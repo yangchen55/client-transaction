@@ -1,7 +1,11 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { CustomInput } from '../components/CustomInput';
+import { CustomInput } from '../components/custum-input/CustomInput';
 import Layout from '../components/layout/Layout';
+import {Link} from 'react-router-dom';
+import { useState } from 'react';
+import {loginUser} from '../utils/axiosHelper'
+import { Alert }  from 'react-bootstrap';
 
 function Login() {
   const inputFields =[
@@ -13,39 +17,62 @@ function Login() {
       name:'email',
       type:'email'
     },
-    {
-      label:'name',
-      placeholder: "kflj",
-      required: true,
-      name:'name',
-      type:'text'
-    },
+   
     {
       label:'pin',
       placeholder: "1243",
       required: true,
       name:'pin',
-      type:'number'
+      type:'number',
+      min: 1000,
+      max:9999
     }
   ]
+  const [form, setForm] = useState({});
+
+  const [response, setResponse] = useState({});
+
+  const handleOnchange = (e) => {
+    const { name, value } = e.target;
+
+    setForm( {...form,
+     [name]: value,
+    });
+    console.log(form)
+  };
+
+
+  const handleOnSubmit = async(e) => {
+    e.preventDefault();
+    
+    const {data} = await loginUser(form);
+  data.success === 'error' && setResponse(data)
+    // console.log(result);
+    
+
+ 
+  };
   return (
     <Layout>
-    <Form className='login-page'>
-        <h2> Register</h2>
+    <Form className='login-page' onSubmit={handleOnSubmit}>
+        <h2> Welcome back 👋 login</h2>
         <hr></hr>
+        {response.message && 
+        (<Alert variant={response.status === "success"? "success": "danger"}>
+        {response.message}
+        </Alert>
+        )}
         {inputFields.map((item) =>(
-          <CustomInput {...item}/>
-        ) )}
-      
+          <CustomInput {...item} onChange={handleOnchange}/>
+        ))}
+     
 
       
       <Button variant="primary" type="submit">
-        Submit
+        Login
       </Button>
       <div className='text-end'>
-        New here? <a href='/register'>register</a>
-
-      
+        New here? <Link to ='/register'>Register </Link>
       </div>
     </Form>
     </Layout>

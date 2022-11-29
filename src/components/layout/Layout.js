@@ -11,7 +11,7 @@ const Layout = ({children}) => {
         </Container>
 
 <footer className='text-center bg-dark text-light p-5 mt-5'>
-    &copy; all right reserved 2022
+  &copy; all right reserved 2022
 </footer>
     </div>
   )
