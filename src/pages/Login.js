@@ -2,12 +2,21 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { CustomInput } from '../components/custum-input/CustomInput';
 import Layout from '../components/layout/Layout';
-import {Link} from 'react-router-dom';
+import {Link,   useNavigate} from 'react-router-dom';
 import { useState } from 'react';
 import {loginUser} from '../utils/axiosHelper'
 import { Alert }  from 'react-bootstrap';
+    
 
-function Login() {
+export const  Login = () =>  {
+  const navigate = useNavigate();
+ 
+  const [form, setForm] = useState({
+    email : 'a@gmail.com',
+    pin: 1234
+  });
+
+  const [response, setResponse] = useState({});
   const inputFields =[
 
     {
@@ -15,7 +24,8 @@ function Login() {
       placeholder: "@email.com",
       required: true,
       name:'email',
-      type:'email'
+      type:'email',
+      value: form.email
     },
    
     {
@@ -25,12 +35,10 @@ function Login() {
       name:'pin',
       type:'number',
       min: 1000,
-      max:9999
+      max:9999,
+      value:form.pin
     }
   ]
-  const [form, setForm] = useState({});
-
-  const [response, setResponse] = useState({});
 
   const handleOnchange = (e) => {
     const { name, value } = e.target;
@@ -45,8 +53,15 @@ function Login() {
   const handleOnSubmit = async(e) => {
     e.preventDefault();
     
-    const {data} = await loginUser(form);
-  data.success === 'error' && setResponse(data)
+  const {data} = await loginUser(form);
+  setResponse(data)
+
+  if(data.status === "success"){ 
+    sessionStorage.setItem("user", JSON.stringify(data.user));
+    navigate("/dashboard");
+ }
+
+
     // console.log(result);
     
 
@@ -77,6 +92,6 @@ function Login() {
     </Form>
     </Layout>
   );
-}
+};
 
 export default Login;

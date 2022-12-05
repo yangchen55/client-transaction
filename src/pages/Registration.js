@@ -12,7 +12,7 @@ function Registration() {
 
     {
       label:'email',
-      placeholder: "@email.com",
+      placeholder: "tse@email.com",
       required: true,
       name:'email',
       type:'email'

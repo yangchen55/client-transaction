@@ -14,9 +14,25 @@
   background: rgb(178, 223, 233);
 }
 
+.form{
+  background: white;
+  border-radius: 5px;
+  padding: 1rem;
+  min-height: 100px;
+  box-shadow: -5px 5px 5px 10px  rgba(128, 128, 128, 0.185);
+ 
+}
 
 
+.table{
+  background: white;
+  border-radius: 7px;
+  margin-top:5px;
+  padding: 1rem;
+  min-height: 100px;
+  box-shadow: -5px 5px 5px 10px  rgba(128, 128, 128, 0.185);
 
+}
 
 
 
