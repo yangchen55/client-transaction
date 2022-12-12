@@ -19,7 +19,6 @@ const getUserIdFromStorage = () => {
 
 // send data to add to db 
  export const postUser = (formData) => {
-
     try {
          return axios.post(userUrl, formData )
         
@@ -49,7 +48,6 @@ export const loginUser = (formData) => {
 // transactiion seciotn
 // send data to add to transaction db 
 export const postTrans =  async(transData) => { 
-
     try {
         const userId = getUserIdFromStorage();
         // console.log(userId, "lkjhg");
@@ -60,7 +58,6 @@ export const postTrans =  async(transData) => {
                 
             }
         }
-
         const {data} = await axios.post(transUrl, transData
             ,{
                 headers:{

@@ -1,7 +1,61 @@
-import React from 'react'
-import Table from 'react-bootstrap/Table';
+import React, {useState} from 'react'
+import {Table, Form, Button} from 'react-bootstrap';
+import { isAccordionItemSelected } from 'react-bootstrap/esm/AccordionContext';
 
 const TransTable = ({ trans }) => {
+  const [idsToDelete, setIdsToDelete] = useState([]);
+
+
+  const handleOnSelect = (e) => {
+    const {checked, value} = e.target;
+    console.log(checked)
+    // if(!checked){
+    //   const {type} = trans.filter((item)  => 
+    //     item._id === value)[0];
+    //     setDeselectAll(false)
+      
+    // }
+  
+  if (checked) {
+    setIdsToDelete([...idsToDelete, value]);
+  } else {
+    const tempArg = idsToDelete.filter((item) => item !== value);
+    setIdsToDelete(tempArg);
+
+  }
+  console.log(idsToDelete);
+}
+const handleOnSelectAll =(e)  => {
+  const {checked} = e.target;
+  if(checked){
+    // select all
+    const argToGetIds = trans.filter((item)  => {
+      return item.type === 'expenses' || item.type === 'income' ;
+      
+    });
+   
+   
+    const ids = trans.map((item  =>item._id ))
+    setIdsToDelete(ids);
+    
+    console.log(idsToDelete);
+
+
+}else{
+  setIdsToDelete([])
+
+}
+
+
+}
+
+const handleOnDelete = () => {
+  // if(!window.confirm(`are you sure you want to delete ${idsToDelete.length}`))
+
+}
+
+  
+
   const total = trans.reduce(
     (acc, { type, amount }) =>
       type === "income" ? acc + amount : acc - amount,
@@ -10,10 +64,18 @@ const TransTable = ({ trans }) => {
   return (
     
     
+<>
+<Table className='table' striped bordered hover>
+<thead>
+  <tr>
+    <th>
+      <Form.Check
+  type="checkbox"
+  onChange={handleOnSelectAll}
+  checked={trans.length === idsToDelete.length}
 
-    <Table className='table' striped bordered hover>
-      <thead>
-        <tr>
+
+/>{""} select all </th>
           <th>Date</th>
           <th>transaction Name </th>
           <th>income</th>
@@ -23,9 +85,18 @@ const TransTable = ({ trans }) => {
       <tbody>
       {trans.map((item, i) => (
           <tr key={item._id}>
-            <td>{item.createdAt}</td>
+<td>
 
-            <td>{item.name}</td>
+<Form.Check
+  type="checkbox"
+onChange={handleOnSelect}
+value={item._id}
+checked ={idsToDelete.includes(item._id)}
+
+></Form.Check>
+                </td>
+            <td>{ new Date(item.createdAt).toLocaleString()}</td>
+            <td>{item.transaction}</td>
             {item.type === "income" ? (
               <>
                 <td>$ {item.amount}</td>
@@ -46,6 +117,11 @@ const TransTable = ({ trans }) => {
         </tr>
       </tbody>
     </Table>
+    {/* ternary operator doesnot show zero if condition false  */}
+    {
+      idsToDelete.length?<Button variant='danger' onClick={handleOnDelete}>Delete {idsToDelete.length} item(s)</Button>:null
+    }
+    </>
  
 
    
