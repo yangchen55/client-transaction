@@ -104,8 +104,33 @@ export const fetchTrans = async() => {
         
     }
 }
+// delete  section 
+export const deleteTrans = async (ids) => {
+    try{
+     const userId = getUserIdFromStorage(); 
+     if(!userId){
+        return{
+            status: "error",
+            message: "you must be logged in"
+        };
+     }
 
-
+       const {data} = await axios.delete(transUrl, {data:ids, headers:{Authorization : userId},})
+       return data;
+    }catch (error){
+        return{
+        status:'error',
+        message: "error.message"
+        };
+    }
+}
 
  
- 
+  // const filteredArg = idsToDelete.filter((item)=> item !== value);
+  // console.log(filteredArg);
+  // setIdsToDelete(filteredArg);
+  // console.log(idsToDelete);
+  // setIdsToDelete(idsToDelete => {
+  //   return idsToDelete.filter(item  => item  !==value )
+  // })
+  // console.log(idsToDelete);

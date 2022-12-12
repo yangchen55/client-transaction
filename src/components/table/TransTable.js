@@ -1,58 +1,63 @@
 import React, {useState} from 'react'
 import {Table, Form, Button} from 'react-bootstrap';
-import { isAccordionItemSelected } from 'react-bootstrap/esm/AccordionContext';
+  import { deleteTrans} from "/Users/Hp/Desktop/projects/reactjs/fullstack-transaction/client-transaction/src/utils/axiosHelper";
 
-const TransTable = ({ trans }) => {
+
+const TransTable = ({ trans, getTrans}) => {
   const [idsToDelete, setIdsToDelete] = useState([]);
+  const [isAllSelected, setIsAllSelected] = useState(false)
 
 
   const handleOnSelect = (e) => {
     const {checked, value} = e.target;
-    console.log(checked)
-    // if(!checked){
-    //   const {type} = trans.filter((item)  => 
-    //     item._id === value)[0];
-    //     setDeselectAll(false)
-      
-    // }
+    // console.log(checked)
+   
   
-  if (checked) {
-    setIdsToDelete([...idsToDelete, value]);
-  } else {
-    const tempArg = idsToDelete.filter((item) => item !== value);
-    setIdsToDelete(tempArg);
+    if (checked) {
+      setIdsToDelete([...idsToDelete, value]);
+      setIsAllSelected(trans.length === idsToDelete.length + 1);
+    } else {
+      setIdsToDelete(idsToDelete.filter((_id) => _id !== value));
+      setIsAllSelected(false)
+    }
 
-  }
-  console.log(idsToDelete);
+  
+  
 }
 const handleOnSelectAll =(e)  => {
-  const {checked} = e.target;
+  const checked = e.target.checked;
   if(checked){
     // select all
-    const argToGetIds = trans.filter((item)  => {
-      return item.type === 'expenses' || item.type === 'income' ;
-      
-    });
-   
-   
-    const ids = trans.map((item  =>item._id ))
-    setIdsToDelete(ids);
+  
+    setIdsToDelete(trans.map(({ _id }) => _id));
+    setIsAllSelected(true);
+
+   }else{
+    setIdsToDelete([])
+    setIsAllSelected(false)
     
-    console.log(idsToDelete);
 
+  }
 
-}else{
-  setIdsToDelete([])
-
-}
 
 
 }
 
-const handleOnDelete = () => {
-  // if(!window.confirm(`are you sure you want to delete ${idsToDelete.length}`))
 
-}
+
+const handleOnDelete = async() => {
+  if(window.confirm(`are you sure you want to delete ${idsToDelete.length} item(s)`)){
+    const {status, message} = await deleteTrans(idsToDelete);
+    if (status === "success") {
+      setIdsToDelete([]);
+      getTrans();
+    }
+
+
+    
+  }
+ 
+};
 
   
 
@@ -72,7 +77,8 @@ const handleOnDelete = () => {
       <Form.Check
   type="checkbox"
   onChange={handleOnSelectAll}
-  checked={trans.length === idsToDelete.length}
+  // checked ={deselect.includes(true)}
+  checked={isAllSelected}
 
 
 />{""} select all </th>
@@ -87,14 +93,13 @@ const handleOnDelete = () => {
           <tr key={item._id}>
 <td>
 
-<Form.Check
-  type="checkbox"
-onChange={handleOnSelect}
-value={item._id}
-checked ={idsToDelete.includes(item._id)}
+            <Form.Check
+              type="checkbox"
+            onChange={handleOnSelect}
+            value={item._id}
+            checked ={idsToDelete.includes(item._id)}
 
-></Form.Check>
-                </td>
+            ></Form.Check> </td>
             <td>{ new Date(item.createdAt).toLocaleString()}</td>
             <td>{item.transaction}</td>
             {item.type === "income" ? (

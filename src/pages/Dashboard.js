@@ -3,14 +3,18 @@ import Layout from '../components/layout/Layout';
 import TransTable from '../components/table/TransTable';
 import TransForm from '../components/form/TransForm';
 import {fetchTrans} from "../utils/axiosHelper"
+import { useNavigate } from 'react-router-dom';
 
 
 
 
  const Dashboard = () => {
-  const [trans, setTrans] =useState([]);
+  const navigate = useNavigate()
+  const [trans, setTrans] = useState([]);
   useEffect(() => {
     getTrans();
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    !user && navigate("/");
   
   }, [])
 
@@ -29,7 +33,7 @@ import {fetchTrans} from "../utils/axiosHelper"
 
 
 <TransForm/>
-<TransTable trans = {trans}/>
+<TransTable trans = {trans} getTrans={getTrans}/>
    
  
   </Layout>

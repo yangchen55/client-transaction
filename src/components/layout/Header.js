@@ -1,15 +1,24 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import { useEffect , useState   } from 'react';
 
 function Header() {
+  // const navigate = useNavigate();
   const [user, setUser] = useState({});
   useEffect(() => {
     const user = JSON.parse(sessionStorage.getItem("user"));
     setUser(user);
   }, [])
+
+  const handleOnLogOut = () => {
+    // remove key from session storage as there is key and value 
+    sessionStorage.removeItem("user");
+    // navigate("/");
+
+    
+  }
 
   return (
     <Navbar bg="primary" variant="dark" expand="md">
@@ -24,7 +33,7 @@ function Header() {
 
 
             
-            <Link to="#" className='nav-link'>Logout</Link>
+            <Link to="/" className='nav-link' onClick={handleOnLogOut}>Logout</Link>
             </>
             ):(
            <>
