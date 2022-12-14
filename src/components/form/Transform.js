@@ -12,18 +12,19 @@ import {toast} from "react-toastify";
 
 const initialState ={
   type:"",
-  name : "",
-  amount: null, 
+  transaction : "",
+  amount: 0, 
 }
 
 
-const TransForm = () => {
+const TransForm = ({getTrans}) => {
     const [transaction, setTransaction] = useState(initialState);
 
 
     const handleOnChange = (e) => {
         const { name, value } = e.target;
-        setTransaction( {...transaction,
+        setTransaction( {
+          ...transaction,
          [name]: value,
         });        
       };
@@ -38,6 +39,8 @@ const TransForm = () => {
     console.log(status, message);
     toast[status](message);
     setTransaction(initialState);
+    getTrans()
+    
       
     }
   return (
@@ -51,11 +54,11 @@ const TransForm = () => {
         </Form.Select>    
      </Col>
      <Col md="5">
-     <Form.Control  type="text" 
+     <Form.Control  type="text" value={transaction.transaction}
       name="transaction" placeholder="transaction" onChange={handleOnChange} required />
      </Col>
      <Col md="auto">
-     <Form.Control type="number"
+     <Form.Control type="number" value={transaction.amount}
       name="amount" placeholder="$500" onChange={handleOnChange} required/>
      </Col>      
      <Col md="auto">

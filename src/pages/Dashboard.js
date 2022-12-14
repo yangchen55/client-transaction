@@ -32,7 +32,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 
-<TransForm/>
+<TransForm getTrans={getTrans}/>
 <TransTable trans = {trans} getTrans={getTrans}/>
    
  

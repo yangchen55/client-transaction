@@ -1,7 +1,9 @@
 import axios from 'axios'
-import { alignPropType } from 'react-bootstrap/esm/types'
 
-const rootUrl = "http://localhost:8000/api/v1"
+
+const rootUrl = process.env.NODE_ENV === "production"
+? "/api/v1"
+: "http://localhost:8000/api/v1"
 const userUrl= rootUrl + "/user"
 const transUrl = rootUrl + "/transaction"
 
@@ -126,11 +128,4 @@ export const deleteTrans = async (ids) => {
 }
 
  
-  // const filteredArg = idsToDelete.filter((item)=> item !== value);
-  // console.log(filteredArg);
-  // setIdsToDelete(filteredArg);
-  // console.log(idsToDelete);
-  // setIdsToDelete(idsToDelete => {
-  //   return idsToDelete.filter(item  => item  !==value )
-  // })
-  // console.log(idsToDelete);
+  
