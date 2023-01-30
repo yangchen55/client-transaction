@@ -10,7 +10,7 @@ const TransTable = ({ trans, getTrans}) => {
 
   const handleOnSelect = (e) => {
     const {checked, value} = e.target;
-    // console.log(checked)
+    console.log("handle on select testing", value)
    
   
     if (checked) {
