@@ -15,7 +15,7 @@ function Header() {
   };
 
   return (
-    <Navbar bg="primary" variant="dark" expand="md">
+    <Navbar className="header" variant="dark" expand="md">
       <Container>
         <Navbar.Brand href="#home">Transaction</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

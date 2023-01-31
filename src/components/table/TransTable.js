@@ -55,8 +55,6 @@ const TransTable = ({ trans }) => {
 
   };
 
-
-
   const total = trans.reduce(
     (acc, { type, amount }) =>
       type === "income" ? acc + amount : acc - amount,
@@ -79,9 +77,9 @@ const TransTable = ({ trans }) => {
 
               />{""} select all </th>
             <th>Date</th>
-            <th>transaction Name </th>
-            <th>income</th>
-            <th>expesnses</th>
+            <th>transaction </th>
+            <th>Income</th>
+            <th>expences</th>
           </tr>
         </thead>
         <tbody>

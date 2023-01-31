@@ -2,20 +2,21 @@
   width: 400px;
   border: 1px solid rgba(128, 128, 128, 0.245);
   padding: 2rem;
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.331);
+  border-radius: 50px;
+  background: #7ca88e;
   margin:auto;
-  box-shadow: -5px 5px 15px 10px rgba(255, 255, 255, 0.173);
+  box-shadow: -5px 5px 15px 10px rgba(255, 255, 255, 0.237);
 }
 
-
-
-.layout{
-  background: rgb(178, 223, 233);
+.layout {
+  background:white;
+}
+.header, footer{
+  background-color:black;
 }
 
 .form{
-  background: white;
+  background: #7ca88e;
   border-radius: 5px;
   padding: 1rem;
   min-height: 100px;
@@ -25,9 +26,9 @@
 
 
 .table{
-  background: rgb(195, 179, 179);
+   background: #c2b9bdb8;
   border-radius: 7px;
-  margin-top:5px;
+  margin-top:5px; 
   padding: 1rem;
   min-height: 100px;
   box-shadow: -5px 5px 5px 10px  rgba(128, 128, 128, 0.185);

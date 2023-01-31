@@ -62,7 +62,7 @@ const TransForm = () => {
         </Col>
         <Col md="auto">
           <div className="d-grid">
-            <Button type="submit">add </Button>
+            <Button type="submit" >add transactions </Button>
           </div>
         </Col>
       </Row>

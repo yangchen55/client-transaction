@@ -23,7 +23,7 @@ export const getTransAction = () => async (dispatch) => {
     try {
         dispatch(requestPending())
         const { message, status, trans } = await fetchTrans()
-        console.log(message, status, trans, "action ")
+
         status === "success"
             ? dispatch(getTransSuccess(trans))
             : dispatch(requestFailed(message))
