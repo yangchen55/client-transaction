@@ -9,10 +9,10 @@ const transUrl = rootUrl + "/transaction";
 
 const getUserIdFromStorage = () => {
   const user = sessionStorage.getItem("user");
-  console.log(user);
+  // console.log(user);
   if (user) {
     const userObj = JSON.parse(user);
-    console.log(userObj._id);
+    // console.log(userObj._id);
     return userObj?._id;
   }
   return;
@@ -60,6 +60,7 @@ export const postTrans = async (transData) => {
       },
     });
     return data;
+    // console.log(data, "axios")
   } catch (error) {
     return {
       status: "error",
@@ -85,6 +86,7 @@ export const fetchTrans = async () => {
         Authorization: userId,
       },
     });
+    console.log(data)
     return data;
   } catch (error) {
     return {

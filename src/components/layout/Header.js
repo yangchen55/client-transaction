@@ -1,24 +1,18 @@
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import {Link, useNavigate} from 'react-router-dom';
-import { useEffect , useState   } from 'react';
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutSuccess } from "../../redux/user/UserSlice";
 
 function Header() {
-  // const navigate = useNavigate();
-  const [user, setUser] = useState({});
-  useEffect(() => {
-    const user = JSON.parse(sessionStorage.getItem("user"));
-    setUser(user);
-  }, [])
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { userInfo } = useSelector((state) => state.user);
 
   const handleOnLogOut = () => {
-    // remove key from session storage as there is key and value 
-    sessionStorage.removeItem("user");
-    // navigate("/");
-
-    
-  }
+    dispatch(logoutSuccess()) && navigate("/");
+  };
 
   return (
     <Navbar bg="primary" variant="dark" expand="md">
@@ -27,19 +21,25 @@ function Header() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            {user?._id?(
+            {userInfo?._id ? (
               <>
-               <div className='nav-link fw-bolder text-warning'> {""} welcome back {user?.name}</div>
+                <div className="nav-link fw-bolder text-warning">
+                  welcome back  ( {userInfo?.name} )
+                </div>
 
-
-            
-            <Link to="/" className='nav-link' onClick={handleOnLogOut}>Logout</Link>
-            </>
-            ):(
-           <>
-            <Link to="/" className='nav-link'>Login</Link>
-            <Link to="/register" className='nav-link'>Register</Link>
-            </>
+                <Link to="/" className="nav-link" onClick={handleOnLogOut}>
+                  Logout
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to="/" className="nav-link">
+                  Login
+                </Link>
+                <Link to="/register" className="nav-link">
+                  Register
+                </Link>
+              </>
             )}
           </Nav>
         </Navbar.Collapse>

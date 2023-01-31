@@ -1,96 +1,76 @@
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import { CustomInput } from '../components/custum-input/CustomInput';
-import Layout from '../components/layout/Layout';
-import {Link,   useNavigate} from 'react-router-dom';
-import { useState } from 'react';
-import {loginUser} from '../utils/axiosHelper'
-import { Alert }  from 'react-bootstrap';
-    
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import { Spinner } from "react-bootstrap";
+import { CustomInput } from "../components/custum-input/CustomInput";
+import Layout from "../components/layout/Layout";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loginAction } from "../redux/user/UserAction";
 
-export const  Login = () =>  {
+export const Login = () => {
   const navigate = useNavigate();
- 
+  const dispatch = useDispatch();
   const [form, setForm] = useState({
-    email : 'a@gmail.com',
-    pin: 1234
+    email: "a@gmail.com",
+    pin: 1234,
   });
 
-  const [response, setResponse] = useState({});
-  const inputFields =[
-
+  const inputFields = [
     {
-      label:'email',
+      label: "email",
       placeholder: "@email.com",
       required: true,
-      name:'email',
-      type:'email',
-      value: form.email
+      name: "email",
+      type: "email",
+      value: form.email,
     },
-   
+
     {
-      label:'pin',
+      label: "pin",
       placeholder: "1243",
       required: true,
-      name:'pin',
-      type:'number',
+      name: "pin",
+      type: "number",
       min: 1000,
-      max:9999,
-      value:form.pin
-    }
-  ]
+      max: 9999,
+      value: form.pin,
+    },
+  ];
+  const { isLoading, isLoggedIn } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    isLoggedIn && navigate("/dashboard");
+  }, [isLoggedIn, navigate]);
 
   const handleOnchange = (e) => {
     const { name, value } = e.target;
-
-    setForm( {...form,
-     [name]: value,
-    });
-    console.log(form)
+    setForm({ ...form, [name]: value });
   };
 
-
-  const handleOnSubmit = async(e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
-    
-  const {data} = await loginUser(form);
-  setResponse(data)
-
-  if(data.status === "success"){ 
-    sessionStorage.setItem("user", JSON.stringify(data.user));
-    navigate("/dashboard");
- }
-
-
-    // console.log(result);
-    
-
- 
+    dispatch(loginAction(form));
   };
 
   return (
     <Layout>
-    <Form className='login-page' onSubmit={handleOnSubmit}>
+      <Form className="login-page" onSubmit={handleOnSubmit}>
         <h2> Welcome back 👋 login</h2>
         <hr></hr>
-        {response.message && 
-        (<Alert variant={response.status === "success"? "success": "danger"}>
-        {response.message}
-        </Alert>
-        )}
-        {inputFields.map((item) =>(
-          <CustomInput {...item} onChange={handleOnchange}/>
-        ))}
-     
 
-      
-      <Button variant="primary" type="submit">
-        Login
-      </Button>
-      <div className='text-end'>
-        New here? <Link to ='/register'>Register </Link>
-      </div>
-    </Form>
+        {inputFields.map((item) => (
+          <CustomInput {...item} onChange={handleOnchange} />
+        ))}
+
+        <Button variant="primary" type="submit">
+          Login
+          <span>{isLoading && <Spinner animation="border" />}</span>
+        </Button>
+        <div className="text-end">
+          New here? <Link to="/register">Register </Link>
+        </div>
+      </Form>
     </Layout>
   );
 };

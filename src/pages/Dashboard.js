@@ -1,43 +1,42 @@
-import React, {useEffect, useState} from  'react'
+import React, { useEffect } from 'react'
 import Layout from '../components/layout/Layout';
 import TransTable from '../components/table/TransTable';
 import TransForm from '../components/form/TransForm';
-import {fetchTrans} from "../utils/axiosHelper"
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTransAction } from "../redux/transaction/TransAction"
 
 
 
 
- const Dashboard = () => {
+
+const Dashboard = () => {
   const navigate = useNavigate()
-  const [trans, setTrans] = useState([]);
+  const dispatch = useDispatch()
+
+  const { trans } = useSelector((state) => state.trans)
+  const { isLoggedIn } = useSelector((state) => state.user)
+
   useEffect(() => {
-    getTrans();
-    const user = JSON.parse(sessionStorage.getItem("user"));
-    !user && navigate("/");
-  
-  }, [])
-
-  const getTrans = async () => {
-    const { trans } = await fetchTrans();
-    setTrans(trans)
-  
-  };
-  console.log(trans);
-          
+    isLoggedIn && navigate("/dashboard");
+    dispatch(getTransAction())
+  }, [isLoggedIn, navigate, dispatch])
 
 
-    
+
+
+
+
   return <Layout>
 
 
 
-<TransForm getTrans={getTrans}/>
-<TransTable trans = {trans} getTrans={getTrans}/>
-   
- 
+    <TransForm />
+    <TransTable trans={trans} />
+
+
   </Layout>
- 
- }
+
+}
 
 export default Dashboard;
